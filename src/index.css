@@ -47,5 +47,23 @@
       0 16px 16px rgba(0,0,0,0.05);
     border: 1px solid rgba(0, 37, 25, 0.1);
   }
+
+  @keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+
+  @keyframes grid-flow {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(40px); }
+  }
+
+  .animate-scanline {
+    animation: scanline 8s linear infinite;
+  }
+
+  .animate-grid-flow {
+    animation: grid-flow 4s linear infinite;
+  }
 }
 
