@@ -13,7 +13,7 @@ function ScrambledText({ text, delay = 0 }: { text: string; delay?: number }) {
     
     const timeout = setTimeout(() => {
       interval = setInterval(() => {
-        setDisplay(prev => 
+        setDisplay(
           text.split("").map((char, index) => {
             if (index < iteration) return text[index];
             if (char === " " || char === "\n") return char;
