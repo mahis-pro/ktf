@@ -19,10 +19,30 @@ function ScrollToTop() {
   return null;
 }
 
+function PageTitleManager() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const titles: Record<string, string> = {
+      '/': 'KWASU Tech Festival | KTF 2025',
+      '/register': 'Registration Terminal | KTF 2025',
+      '/experience': 'Deep-Dive Experience | KTF 2025',
+      '/awards': 'Awards & Nominations | KTF 2025',
+      '/merch': 'Official Merchandise | KTF 2025',
+      '/partners': 'Partnership & Sponsorship | KTF 2025',
+    };
+
+    document.title = titles[pathname] || 'KWASU Tech Festival | KTF 2025';
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     <div className="min-h-screen bg-background text-on-surface font-body selection:bg-primary/30 selection:text-primary overflow-x-hidden max-w-full">
       <ScrollToTop />
+      <PageTitleManager />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

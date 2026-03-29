@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Section } from '../layout/Section';
 import { Button } from '../ui/Button';
-import { Check, Mail, Building, User, Phone, ArrowRight } from 'lucide-react';
+import { Check, Building, ArrowRight } from 'lucide-react';
 
 export function PartnersCTA() {
   const [isSubmitting, setIsSubmitting] = useState(false);
