@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Button } from '../ui/Button';
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
@@ -94,12 +95,16 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 2 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-16"
           >
-            <Button size="lg" className="px-12 h-16 text-sm font-bold uppercase tracking-[0.2em] rounded-none border border-primary hover:bg-primary hover:text-white transition-all duration-300">
-              Initiate Access
-            </Button>
-            <Button variant="secondary" size="lg" className="px-12 h-16 text-sm font-bold uppercase tracking-[0.2em] rounded-none border border-outline-variant/30 hover:border-primary transition-all duration-300">
-              Protocol Details
-            </Button>
+            <Link to="/register">
+              <Button size="lg" className="px-12 h-16 text-sm font-bold uppercase tracking-[0.2em] rounded-none border border-primary hover:bg-primary hover:text-white transition-all duration-300">
+                Get Involved
+              </Button>
+            </Link>
+            <Link to="/experience">
+              <Button variant="secondary" size="lg" className="px-12 h-16 text-sm font-bold uppercase tracking-[0.2em] rounded-none border border-outline-variant/30 hover:border-primary transition-all duration-300">
+                The Experience
+              </Button>
+            </Link>
           </motion.div>
         </div>
 

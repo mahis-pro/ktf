@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Section } from '../layout/Section';
 import { cn } from '../../lib/utils';
 import { Plus, X, ArrowRight } from 'lucide-react';
@@ -82,12 +83,12 @@ function InteractiveGlassCard({ data, isActive, onToggle }: { data: typeof CARDS
               </p>
               
               <div className="mt-auto pt-4 border-t border-white/10">
-                <button className="flex items-center space-x-3 bg-white/10 hover:bg-white/20 transition-all px-4 py-2 mt-4 rounded-full text-xs font-bold uppercase tracking-widest backdrop-blur-md border border-white/10 group-hover:border-white/20 w-fit">
+                <Link to="/register" className="flex items-center space-x-3 bg-white/10 hover:bg-white/20 transition-all px-4 py-2 mt-4 rounded-full text-xs font-bold uppercase tracking-widest backdrop-blur-md border border-white/10 group-hover:border-white/20 w-fit">
                   <span className="ml-2">Get Started</span>
                   <div className="bg-white text-black rounded-full p-1.5 transition-transform group-hover:-rotate-45 ml-4">
                     <ArrowRight size={14} />
                   </div>
-                </button>
+                </Link>
               </div>
             </motion.div>
           )}

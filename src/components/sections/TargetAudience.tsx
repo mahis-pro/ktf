@@ -2,6 +2,7 @@ import { Section } from '../layout/Section';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { RefreshCw } from 'lucide-react';
+import { PartnersMarquee } from '../layout/PartnersMarquee';
 
 const SEGMENTS = [
   { 
@@ -121,32 +122,8 @@ export function TargetAudience() {
       </div>
       
       {/* Logos row — Infinite Marquee for Partners */}
-      <div className="mt-32 pt-16 border-t border-outline-variant/30 relative overflow-hidden">
-        {/* Edge Fades */}
-        <div className="absolute left-0 top-16 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-16 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-
-        <motion.div 
-          className="flex whitespace-nowrap gap-24 items-center"
-          animate={{
-            x: [0, -1200], 
-          }}
-          transition={{
-            duration: 40,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        >
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="flex gap-24 items-center">
-              <div className="text-2xl font-bold text-primary/20">TechCorp</div>
-              <div className="text-2xl font-bold text-primary/20">VentureX</div>
-              <div className="text-2xl font-bold text-primary/20">BuildFlow</div>
-              <div className="text-2xl font-bold text-primary/20">Nexus</div>
-              <div className="text-2xl font-bold text-primary/20">Innovate Labs</div>
-            </div>
-          ))}
-        </motion.div>
+      <div className="mt-32 pt-16 border-t border-outline-variant/30">
+        <PartnersMarquee />
       </div>
     </Section>
   );

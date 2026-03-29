@@ -1,6 +1,8 @@
-import { cn } from '../../lib/utils';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { Button } from '../ui/Button';
+import { cn } from '../../lib/utils';
 
 const ZONES = [
   {
@@ -8,21 +10,21 @@ const ZONES = [
     title: 'Main Arena',
     role: 'Open to All',
     description: 'Keynotes, founder stories, startup pitches, and award ceremonies. The pulse of the festival.',
-    image: '/zone-arena.jpg', // User will replace
+    image: '/events.jpg',
   },
   {
     id: 'zone-02',
     title: 'Simulation Arena',
     role: 'War Room',
     description: 'The war room. Focus on startup building, problem solving, and pitching under intense pressure.',
-    image: '/zone-warroom.jpg', // User will replace
+    image: '/events (2).jpg',
   },
   {
     id: 'zone-03',
     title: 'Innovation Pavilion',
     role: 'Connect & Grow',
     description: 'CV reviews, tech demos, startup booths, and the creator lab. Expand your circle.',
-    image: '/zone-lab.jpg', // User will replace
+    image: '/events (3).jpg',
   }
 ];
 
@@ -136,6 +138,19 @@ export function ExperienceZones() {
               </motion.div>
             );
           })}
+        </div>
+        
+        {/* Global Experience CTA */}
+        <div className="mt-20 text-center">
+           <Link to="/experience">
+              <Button 
+                variant="secondary" 
+                size="lg" 
+                className="px-12 h-14 rounded-none uppercase tracking-[0.2em] font-bold text-xs border-white/20 text-white hover:border-emerald-500 hover:text-emerald-400 transition-all duration-500"
+              >
+                Explore Detailed Journey
+              </Button>
+           </Link>
         </div>
       </div>
     </section>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '../ui/Button';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,36 +8,48 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const LINKS = [
-    { name: 'Experience', href: '#experience' },
-    { name: 'Schedule', href: '#schedule' },
-    { name: 'Audience', href: '#audience' },
-    { name: 'Partners', href: '#partners' }
+    { name: 'Experience', href: '/experience', isExternal: false },
+    { name: 'Awards', href: '/awards', isExternal: false },
+    { name: 'Merchandise', href: '/merch', isExternal: false },
+    { name: 'Partners', href: '/#partners', isExternal: false }
   ];
 
   return (
     <header className="sticky top-0 z-[100] w-full bg-background/80 backdrop-blur-md border-b border-outline-variant/30">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
-          <a href="#" className="flex-shrink-0">
+          <Link to="/" className="flex-shrink-0">
             <img src="/ktf.png" alt="KWASU Tech Festival Logo" className="h-10 w-auto object-contain" />
-          </a>
+          </Link>
         </div>
         
         {/* Desktop Nav */}
         <nav className="hidden md:flex space-x-10">
           {LINKS.map((link) => (
-            <a 
-              key={link.name} 
-              href={link.href} 
-              className="text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors tracking-wide"
-            >
-              {link.name}
-            </a>
+            link.isExternal ? (
+              <a 
+                key={link.name} 
+                href={link.href} 
+                className="text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors tracking-wide"
+              >
+                {link.name}
+              </a>
+            ) : (
+              <Link 
+                key={link.name} 
+                to={link.href} 
+                className="text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors tracking-wide"
+              >
+                {link.name}
+              </Link>
+            )
           ))}
         </nav>
 
         <div className="flex items-center space-x-4">
-          <Button size="md" className="hidden sm:inline-flex">Get Tickets</Button>
+          <Link to="/register">
+            <Button size="md" className="hidden sm:inline-flex rounded-none uppercase tracking-widest text-xs font-bold">Get Access</Button>
+          </Link>
           
           {/* Mobile Menu Toggle */}
           <button 
@@ -59,17 +72,30 @@ export function Navbar() {
           >
             <nav className="flex flex-col space-y-8 mt-8">
               {LINKS.map((link) => (
-                <a 
-                  key={link.name} 
-                  href={link.href} 
-                  className="text-3xl font-bold text-primary hover:text-secondary transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.name}
-                </a>
+                link.isExternal ? (
+                  <a 
+                    key={link.name} 
+                    href={link.href} 
+                    className="text-3xl font-bold text-primary hover:text-secondary transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.name}
+                  </a>
+                ) : (
+                  <Link 
+                    key={link.name} 
+                    to={link.href} 
+                    className="text-3xl font-bold text-primary hover:text-secondary transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                )
               ))}
               <div className="pt-8">
-                 <Button size="lg" className="w-full">Get Tickets</Button>
+                 <Link to="/register" onClick={() => setIsOpen(false)}>
+                    <Button size="lg" className="w-full rounded-none uppercase tracking-widest font-bold">Get Access Permit</Button>
+                 </Link>
               </div>
             </nav>
             

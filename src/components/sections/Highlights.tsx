@@ -1,11 +1,11 @@
 import { Section } from '../layout/Section';
 
 const HIGHLIGHTS = [
-  { text: 'Live Pitch Battles', image: '/photo-1.jpg' },
-  { text: 'Digital Art Showdown', image: '/photo-2.jpg' },
-  { text: 'Brand Sprint Challenge', image: '/photo-3.jpg' },
-  { text: 'Gaming & Tech Installations', image: '/photo-4.jpg' },
-  { text: 'Networking Mixers', image: '/photo-5.jpg' }
+  { text: 'Live Pitch Battles', image: '/pitch battle.jpg' },
+  { text: 'Digital Art Showdown', image: '/events (3).jpg' },
+  { text: 'Brand Sprint Challenge', image: '/events.jpeg' },
+  { text: 'Gaming & Tech Installations', image: '/events (4).jpg' },
+  { text: 'Networking Mixers', image: '/networking.jpg' }
 ];
 
 export function Highlights() {

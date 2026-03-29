@@ -1,32 +1,35 @@
-import { Hero } from './components/sections/Hero';
-import { Trust } from './components/sections/Trust';
-import { Differentiation } from './components/sections/Differentiation';
-import { ExperienceZones } from './components/sections/ExperienceZones';
-import { EventFlow } from './components/sections/EventFlow';
-import { TargetAudience } from './components/sections/TargetAudience';
-import { Collaboration } from './components/sections/Collaboration';
-import { Highlights } from './components/sections/Highlights';
-import { Sponsorship } from './components/sections/Sponsorship';
-import { FinalCTA } from './components/sections/FinalCTA';
-import { Footer } from './components/layout/Footer';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Navbar } from './components/layout/Navbar';
+import { Footer } from './components/layout/Footer';
+import { Home } from './pages/Home';
+import { Register } from './pages/Register';
+import { Experience } from './pages/Experience';
+import { Awards } from './pages/Awards';
+import Merch from './pages/Merch';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 function App() {
   return (
     <div className="min-h-screen bg-background text-on-surface font-body selection:bg-primary/30 selection:text-primary overflow-x-hidden max-w-full">
+      <ScrollToTop />
       <Navbar />
-      <main>
-        <Hero />
-        <Trust />
-        <Differentiation />
-        <ExperienceZones />
-        <EventFlow />
-        <TargetAudience />
-        <Collaboration />
-        <Highlights />
-        <Sponsorship />
-        <FinalCTA />
-      </main>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/experience" element={<Experience />} />
+        <Route path="/awards" element={<Awards />} />
+        <Route path="/merch" element={<Merch />} />
+      </Routes>
       <Footer />
     </div>
   );

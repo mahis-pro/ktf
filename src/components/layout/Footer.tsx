@@ -6,8 +6,8 @@ export function Footer() {
       <Section className="py-12 md:py-16">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 border-b border-surface-container-low pb-12">
           <div className="lg:col-span-2">
-            <h3 className="text-2xl font-display font-bold text-white mb-4">KWASU Tech Festival</h3>
-            <p className="text-on-surface-variant max-w-sm">From Campus to Industry. The ultimate tech ecosystem simulation.</p>
+            <img src="/ktf.png" alt="KWASU Tech Festival Logo" className="h-12 w-auto object-contain mb-8 filter grayscale hover:grayscale-0 transition-all duration-300" />
+            <p className="text-on-surface-variant max-w-sm">From Campus to Industry. <br/>The ultimate tech ecosystem simulation.</p>
           </div>
           
           <div>

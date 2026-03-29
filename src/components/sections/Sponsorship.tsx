@@ -1,4 +1,5 @@
 import { Section } from '../layout/Section';
+import { Link } from 'react-router-dom';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 
@@ -20,9 +21,11 @@ export function Sponsorship() {
           <p className="text-lg text-on-surface-variant mb-8 leading-relaxed">
             Position your brand at the center of innovation. Align with builders, early adopters, and top-tier talent before they enter the market.
           </p>
-          <Button size="lg" className="w-full sm:w-auto">
-            Request Sponsorship Deck
-          </Button>
+          <Link to="/register?type=partner">
+            <Button size="lg" className="w-full sm:w-auto">
+              Request Sponsorship Deck
+            </Button>
+          </Link>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
