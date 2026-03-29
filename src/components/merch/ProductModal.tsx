@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../ui/Button';
-import { X, ShoppingBag, Check } from 'lucide-react';
+import { X, ShoppingBag } from 'lucide-react';
 import { useState } from 'react';
 
 interface Product {
