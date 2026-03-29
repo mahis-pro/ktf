@@ -7,6 +7,7 @@ import { Register } from './pages/Register';
 import { Experience } from './pages/Experience';
 import { Awards } from './pages/Awards';
 import Merch from './pages/Merch';
+import Partners from './pages/Partners';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -29,6 +30,7 @@ function App() {
         <Route path="/experience" element={<Experience />} />
         <Route path="/awards" element={<Awards />} />
         <Route path="/merch" element={<Merch />} />
+        <Route path="/partners" element={<Partners />} />
       </Routes>
       <Footer />
     </div>

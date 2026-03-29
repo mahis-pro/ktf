@@ -11,7 +11,7 @@ export function Navbar() {
     { name: 'Experience', href: '/experience', isExternal: false },
     { name: 'Awards', href: '/awards', isExternal: false },
     { name: 'Merchandise', href: '/merch', isExternal: false },
-    { name: 'Partners', href: '/#partners', isExternal: false }
+    { name: 'Partners', href: '/partners', isExternal: false }
   ];
 
   return (

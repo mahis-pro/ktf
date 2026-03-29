@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../components/ui/Button';
-import { Check, ArrowRight, X, AlertTriangle, Layers, Zap, PenTool, Briefcase, Presentation, Handshake } from 'lucide-react';
+import { Check, ArrowRight, X, AlertTriangle, Layers, Zap, PenTool, Briefcase } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 // TYPES
@@ -28,7 +28,7 @@ const PERMITS: Permit[] = [
       'Main Stage Keynotes',
       'Standard Networking'
     ],
-    externalLink: '/register?type=general',
+    externalLink: 'https://luma.com/ifg61xmu',
     icon: Layers
   },
   {
@@ -43,7 +43,7 @@ const PERMITS: Permit[] = [
     ],
     badge: 'Limited Slots',
     limit: '45/50 remaining',
-    externalLink: '/register?type=simulation',
+    externalLink: 'https://luma.com/ifg61xmu',
     requiresPreForm: true,
     icon: Zap
   },
@@ -59,7 +59,7 @@ const PERMITS: Permit[] = [
     ],
     badge: 'Limited Slots',
     limit: '28/40 remaining',
-    externalLink: '/register?type=creative',
+    externalLink: 'https://luma.com/ifg61xmu',
     requiresPreForm: true,
     icon: PenTool
   },
@@ -73,45 +73,18 @@ const PERMITS: Permit[] = [
       'Portfolio Sessions',
       'Talent Pool Inclusion'
     ],
-    externalLink: '/register?type=career',
+    externalLink: 'https://luma.com/ifg61xmu',
     requiresPreForm: true,
     icon: Briefcase
-  },
-  {
-    id: 'exhibitor',
-    title: 'Exhibitor Access',
-    description: 'Showcase your innovation to the brightest minds in tech.',
-    benefits: [
-      'Booth Space',
-      'Showcase Opportunity',
-      'Lead Collection',
-      'Brand Logo in Arena'
-    ],
-    externalLink: '/register?type=exhibitor',
-    requiresPreForm: true,
-    icon: Presentation
-  },
-  {
-    id: 'partner',
-    title: 'Partner Access',
-    description: 'Elevate your brand beyond the exhibition. Strategic sponsorship opportunities.',
-    benefits: [
-      'Sponsorship Package',
-      'VVIP Branding',
-      'Strategic Placements',
-      'Partner-only Mixer'
-    ],
-    externalLink: '/register?type=partner',
-    icon: Handshake
   }
 ];
 
 const ZONES = [
-  { name: 'Main Arena', general: true, simulation: true, creative: true, career: true, exhibitor: true, partner: true },
-  { name: 'Simulation Arena', general: false, simulation: true, creative: false, career: false, exhibitor: false, partner: true },
-  { name: 'Creative Track', general: false, simulation: false, creative: true, career: false, exhibitor: false, partner: true },
-  { name: 'Career Lab', general: false, simulation: false, creative: false, career: true, exhibitor: false, partner: true },
-  { name: 'Exhibition Booths', general: true, simulation: true, creative: true, career: true, exhibitor: true, partner: true },
+  { name: 'Main Arena', general: true, simulation: true, creative: true, career: true },
+  { name: 'Simulation Arena', general: false, simulation: true, creative: false, career: false },
+  { name: 'Creative Track', general: false, simulation: false, creative: true, career: false },
+  { name: 'Career Lab', general: false, simulation: false, creative: false, career: true },
+  { name: 'Exhibition Booths', general: true, simulation: true, creative: true, career: true },
 ];
 
 export function Register() {
