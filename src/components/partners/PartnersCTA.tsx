@@ -155,10 +155,10 @@ export function PartnersCTA() {
 
                   <Button 
                     type="submit"
-                    disabled={isSubmitting}
+                    loading={isSubmitting}
                     className="w-full h-20 bg-primary text-white hover:bg-primary/90 rounded-none uppercase tracking-[0.4em] font-bold text-xs mt-8 shadow-2xl transition-all"
                   >
-                    {isSubmitting ? 'Architecting...' : 'Submit Inquiry'}
+                    Submit Inquiry
                     <ArrowRight size={16} className="ml-4" />
                   </Button>
                 </form>

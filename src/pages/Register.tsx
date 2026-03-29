@@ -90,6 +90,8 @@ const ZONES = [
 export function Register() {
   const [selectedPermit, setSelectedPermit] = useState<Permit | null>(null);
   const [showPreForm, setShowPreForm] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -103,6 +105,7 @@ export function Register() {
     if (permit.requiresPreForm) {
       setSelectedPermit(permit);
       setShowPreForm(true);
+      setIsSuccess(false); // Reset success state
     } else {
       // Redirect logic for simple registration
       window.location.href = permit.externalLink;
@@ -111,8 +114,8 @@ export function Register() {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
-    // REPLACE THIS with your actual Google Apps Script Web App URL
     const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxELX7EKWltAeT2iJ1whdED3eTeZbg9PNsu0389VZt-Zk7lYMxYySVbw5pQPZxFuybG/exec';
     
     try {
@@ -125,26 +128,30 @@ export function Register() {
         'track': selectedPermit?.title || 'Unknown'
       };
 
-      console.log('Synchronizing data with KTF Master Sheet...', payload);
-      
-      // We use 'no-cors' mode for Google Apps Script to prevent cross-origin errors 
-      // when sending the request (as it returns a redirect)
       await fetch(GOOGLE_APPS_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors', 
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
+      setIsSuccess(true);
+      
+      // Wait for 3 seconds before redirecting
+      setTimeout(() => {
+        if (selectedPermit) {
+          window.location.href = selectedPermit.externalLink;
+        }
+      }, 3000);
+
     } catch (error) {
       console.error('Data synchronization failed:', error);
-    } finally {
-      // Redirect after attempting to save
+      // Fallback redirect even on error to not block the user
       if (selectedPermit) {
         window.location.href = selectedPermit.externalLink;
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -418,85 +425,122 @@ export function Register() {
                 </p>
               </div>
 
-              <form onSubmit={handleFormSubmit} className="space-y-6">
-                <div>
-                   <label className="block text-[10px] uppercase font-mono tracking-widest text-primary/60 mb-2">Full Name</label>
-                   <input 
-                    required
-                    className="w-full bg-white border border-outline-variant/40 px-4 h-12 focus:border-primary outline-none transition-colors" 
-                    placeholder="Enter your legal name"
-                    value={formData.fullName}
-                    onChange={(e) => setFormData({...formData, fullName: e.target.value})}
-                   />
-                </div>
-
-                <div>
-                   <label className="block text-[10px] uppercase font-mono tracking-widest text-primary/60 mb-2">Email Address</label>
-                   <input 
-                    required
-                    type="email"
-                    className="w-full bg-white border border-outline-variant/40 px-4 h-12 focus:border-primary outline-none transition-colors" 
-                    placeholder="you@domain.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                   />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[10px] uppercase font-mono tracking-widest text-primary/60 mb-2">Primary Role</label>
-                    <select 
-                      required
-                      className="w-full bg-white border border-outline-variant/40 px-4 h-12 focus:border-primary outline-none transition-colors"
-                      value={formData.role}
-                      onChange={(e) => setFormData({...formData, role: e.target.value})}
-                    >
-                      <option value="">Select Role</option>
-                      <option value="developer">Professional Developer</option>
-                      <option value="designer">UI/UX Designer</option>
-                      <option value="content-creator">Content Creator</option>
-                      <option value="video-editor">Video Editor</option>
-                      <option value="photographer">Photographer</option>
-                      <option value="artist">Digital Artist / Illustrator</option>
-                      <option value="founder">Startup Founder</option>
-                      <option value="investor">Ecosystem Professional</option>
-                      <option value="student">Student / Emerging Talent</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-[10px] uppercase font-mono tracking-widest text-primary/60 mb-2">Skill Level</label>
-                    <select 
-                      required
-                      className="w-full bg-white border border-outline-variant/40 px-4 h-12 focus:border-primary outline-none transition-colors"
-                      value={formData.skillLevel}
-                      onChange={(e) => setFormData({...formData, skillLevel: e.target.value})}
-                    >
-                      <option value="">Select Level</option>
-                      <option value="beginner">Beginner</option>
-                      <option value="intermediate">Intermediate</option>
-                      <option value="advanced">Advanced</option>
-                      <option value="expert">Expert</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                  <Button 
-                    type="button"
-                    variant="secondary"
-                    onClick={() => setShowPreForm(false)}
-                    className="flex-1 h-14 rounded-none uppercase tracking-widest font-bold"
+              <AnimatePresence mode="wait">
+                {!isSuccess ? (
+                  <motion.form 
+                    key="registration-form"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    onSubmit={handleFormSubmit} 
+                    className="space-y-6"
                   >
-                    Cancel
-                  </Button>
-                  <Button 
-                    type="submit" 
-                    className="flex-[2] h-14 rounded-none uppercase tracking-widest font-bold"
+                    <div>
+                      <label className="block text-[10px] uppercase font-mono tracking-widest text-primary/60 mb-2">Full Name</label>
+                      <input 
+                        required
+                        className="w-full bg-white border border-outline-variant/40 px-4 h-12 focus:border-primary outline-none transition-colors" 
+                        placeholder="Enter your legal name"
+                        value={formData.fullName}
+                        onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] uppercase font-mono tracking-widest text-primary/60 mb-2">Email Address</label>
+                      <input 
+                        required
+                        type="email"
+                        className="w-full bg-white border border-outline-variant/40 px-4 h-12 focus:border-primary outline-none transition-colors" 
+                        placeholder="you@domain.com"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-[10px] uppercase font-mono tracking-widest text-primary/60 mb-2">Primary Role</label>
+                        <select 
+                          required
+                          className="w-full bg-white border border-outline-variant/40 px-4 h-12 focus:border-primary outline-none transition-colors"
+                          value={formData.role}
+                          onChange={(e) => setFormData({...formData, role: e.target.value})}
+                        >
+                          <option value="">Select Role</option>
+                          <option value="developer">Professional Developer</option>
+                          <option value="designer">UI/UX Designer</option>
+                          <option value="content-creator">Content Creator</option>
+                          <option value="video-editor">Video Editor</option>
+                          <option value="photographer">Photographer</option>
+                          <option value="artist">Digital Artist / Illustrator</option>
+                          <option value="founder">Startup Founder</option>
+                          <option value="investor">Ecosystem Professional</option>
+                          <option value="student">Student / Emerging Talent</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-[10px] uppercase font-mono tracking-widest text-primary/60 mb-2">Skill Level</label>
+                        <select 
+                          required
+                          className="w-full bg-white border border-outline-variant/40 px-4 h-12 focus:border-primary outline-none transition-colors"
+                          value={formData.skillLevel}
+                          onChange={(e) => setFormData({...formData, skillLevel: e.target.value})}
+                        >
+                          <option value="">Select Level</option>
+                          <option value="beginner">Beginner</option>
+                          <option value="intermediate">Intermediate</option>
+                          <option value="advanced">Advanced</option>
+                          <option value="expert">Expert</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-4 mt-8">
+                      <Button 
+                        type="button"
+                        variant="secondary"
+                        onClick={() => setShowPreForm(false)}
+                        className="flex-1 h-14 rounded-none uppercase tracking-widest font-bold"
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        type="submit" 
+                        loading={isSubmitting}
+                        className="flex-[2] h-14 rounded-none uppercase tracking-widest font-bold"
+                      >
+                        Continue
+                      </Button>
+                    </div>
+                  </motion.form>
+                ) : (
+                  <motion.div 
+                    key="success-state"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="py-12 text-center"
                   >
-                    Continue
-                  </Button>
-                </div>
-              </form>
+                    <div className="inline-flex items-center justify-center h-20 w-20 bg-secondary/10 text-secondary rounded-full mb-6">
+                      <Check size={40} strokeWidth={3} />
+                    </div>
+                    <h3 className="text-3xl font-bold uppercase mb-4 tracking-tighter">Profile Synchronized!</h3>
+                    <p className="text-on-surface-variant font-light mb-8 max-w-[280px] mx-auto">
+                      Your data has been secured in the KTF Master Sheet. Redirecting you to the external permit terminal...
+                    </p>
+                    <div className="flex justify-center gap-1">
+                      {[0, 1, 2].map((i) => (
+                        <motion.div 
+                          key={i}
+                          animate={{ opacity: [0.2, 1, 0.2] }}
+                          transition={{ repeat: Infinity, duration: 1, delay: i * 0.2 }}
+                          className="h-1.5 w-1.5 bg-primary rounded-full"
+                        />
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           </div>
         )}
