@@ -9,6 +9,7 @@ import { Awards } from './pages/Awards';
 import Merch from './pages/Merch';
 import Partners from './pages/Partners';
 import { History } from './pages/History';
+import { GetDP } from './pages/GetDP';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -44,6 +45,11 @@ function PageTitleManager() {
         title: 'Awards & Nominations | KTF 2026',
         description: 'Nominate outstanding innovators and projects for the KTF 2026 Awards Registry.',
         image: '/pitch battle.jpg'
+      },
+      '/get-dp': {
+        title: 'Attendee Campaign | KTF 2026',
+        description: 'Generate your official KWASU Tech Festival attendee flyer and avatar. Join the ecosystem on 20th June 2026.',
+        image: '/ktf.png'
       },
       '/merch': {
         title: 'Official Merchandise | KTF 2026',
@@ -108,6 +114,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/experience" element={<Experience />} />
         <Route path="/awards" element={<Awards />} />
+        <Route path="/get-dp" element={<GetDP />} />
         <Route path="/merch" element={<Merch />} />
         <Route path="/partners" element={<Partners />} />
         <Route path="/history" element={<History />} />
