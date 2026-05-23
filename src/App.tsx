@@ -10,6 +10,7 @@ import Merch from './pages/Merch';
 import Partners from './pages/Partners';
 import { History } from './pages/History';
 import { GetDP } from './pages/GetDP';
+import { NotFound } from './pages/NotFound';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -68,7 +69,11 @@ function PageTitleManager() {
       },
     };
 
-    const currentSEO = seoData[pathname] || seoData['/'];
+    const currentSEO = seoData[pathname] || {
+      title: 'Error 404 | Page Not Found',
+      description: 'The requested resource could not be resolved on this system.',
+      image: '/ktf.png'
+    };
     document.title = currentSEO.title;
     
     const metaDescription = document.querySelector('meta[name="description"]');
@@ -118,6 +123,7 @@ function App() {
         <Route path="/merch" element={<Merch />} />
         <Route path="/partners" element={<Partners />} />
         <Route path="/history" element={<History />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </div>
