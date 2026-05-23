@@ -92,6 +92,7 @@ export function Register() {
   const [showPreForm, setShowPreForm] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAlreadyRegistered, setIsAlreadyRegistered] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -115,6 +116,7 @@ export function Register() {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setIsAlreadyRegistered(false);
     
     const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxELX7EKWltAeT2iJ1whdED3eTeZbg9PNsu0389VZt-Zk7lYMxYySVbw5pQPZxFuybG/exec';
     
@@ -128,13 +130,18 @@ export function Register() {
         'track': selectedPermit?.title || 'Unknown'
       };
 
-      await fetch(GOOGLE_APPS_SCRIPT_URL, {
+      const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors', 
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(payload),
       });
 
+      const responseText = await response.text();
+
+      if (responseText.includes('Already Registered')) {
+        setIsAlreadyRegistered(true);
+      }
+      
       setIsSuccess(true);
       
       // Wait for 3 seconds before redirecting
@@ -513,9 +520,13 @@ export function Register() {
                     <div className="inline-flex items-center justify-center h-20 w-20 bg-secondary/10 text-secondary rounded-full mb-6">
                       <Check size={40} strokeWidth={3} />
                     </div>
-                    <h3 className="text-3xl font-bold uppercase mb-4 tracking-tighter">Profile Synchronized!</h3>
-                    <p className="text-on-surface-variant font-light mb-8 max-w-[280px] mx-auto">
-                      Your data has been secured in the KTF Master Sheet. Redirecting you to the external permit terminal...
+                    <h3 className="text-3xl font-bold uppercase mb-4 tracking-tighter">
+                      {isAlreadyRegistered ? 'Already Registered!' : 'Profile Synchronized!'}
+                    </h3>
+                    <p className="text-on-surface-variant font-light mb-8 max-w-[280px] mx-auto leading-relaxed">
+                      {isAlreadyRegistered 
+                        ? "You have already completed this profile sync. Redirecting you to claim your permit..."
+                        : "Your data has been secured in the KTF Master Sheet. Redirecting you to the external permit terminal..."}
                     </p>
                     <div className="flex justify-center gap-1">
                       {[0, 1, 2].map((i) => (

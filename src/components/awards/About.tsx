@@ -28,21 +28,17 @@ export function AwardAbout() {
            whileInView={{ opacity: 1, scale: 1 }}
            viewport={{ once: true }}
            transition={{ duration: 1, delay: 0.2 }}
-           className="relative group h-[500px] overflow-hidden border border-outline-variant/30 bg-surface-container-low flex items-center justify-center"
+           className="relative group h-[500px] overflow-hidden border border-outline-variant/30 bg-surface-container-low"
         >
-           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 group-hover:opacity-60 transition-opacity" />
-           <div className="relative z-10 text-center p-12">
-              <span className="text-[100px] font-display text-primary/10 tracking-tighter">KTF</span>
-              <p className="text-xs uppercase tracking-[0.5em] text-primary/40 mt-4">Verified_Performance</p>
-           </div>
-           
-           {/* Abstract Technical Grid for visual flair */}
-           <div className="absolute bottom-0 right-0 p-8 opacity-20 group-hover:opacity-40 transition-opacity">
-              <div className="grid grid-cols-4 gap-2">
-                 {[...Array(16)].map((_, i) => (
-                    <div key={i} className="h-1 w-1 bg-primary/40 rounded-full" />
-                 ))}
-              </div>
+           <img 
+             src="/pitch battle.jpg" 
+             alt="KTF Awards & Pitch Battle" 
+             className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 brightness-[0.7] group-hover:brightness-[0.9]" 
+           />
+           <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/10 to-transparent pointer-events-none" />
+           <div className="absolute bottom-0 left-0 p-10 z-10">
+              <span className="text-[40px] font-display text-white tracking-tighter block mb-2 leading-none uppercase">Pitch Battle</span>
+              <p className="text-xs uppercase tracking-[0.4em] text-secondary">KTF_Verified_Performance</p>
            </div>
         </motion.div>
       </div>
