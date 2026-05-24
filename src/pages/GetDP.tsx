@@ -37,6 +37,17 @@ I wont be missing this so you should not
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Proactively copy the caption to clipboard so that if the platform (like Instagram) blocks pre-filled text, the user has it ready to paste!
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        await navigator.clipboard.writeText(shareText);
+        setActivePlatformToast("Campaign caption auto-copied! Paste it when sharing.");
+        setTimeout(() => setActivePlatformToast(null), 4000);
+      }
+    } catch (clipboardErr) {
+      console.log("Clipboard write failed", clipboardErr);
+    }
+
     try {
       canvas.toBlob(async (blob) => {
         if (!blob) {
@@ -473,17 +484,18 @@ I wont be missing this so you should not
               </Button>
             </div>
 
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 pt-6 border-t border-outline-variant/10">
-              <p className="text-xs text-on-surface-variant/70 font-light leading-relaxed max-w-2xl">
-                Click the share button to launch your device's native sharing hub. You can share your custom attendee flyer and caption directly to WhatsApp, X (Twitter), LinkedIn, Instagram, or any community platform. 
-                <br />
-                <span className="text-[10px] text-on-surface-variant/40 font-mono mt-2 block">
-                  NOTE: If direct native image sharing is not supported by your browser (e.g. legacy desktop environments), the system will automatically download your high-res flyer image and copy the caption text for simple manual uploading.
-                </span>
-              </p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pt-6 border-t border-outline-variant/10">
+              <div>
+                <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary/60">
+                  Supported Platforms
+                </h4>
+                <p className="text-[10px] text-on-surface-variant/40 font-mono mt-1 uppercase">
+                  Natively shares high-res flyer & campaign caption
+                </p>
+              </div>
 
               {/* GORGEOUS PREMIUM VISUAL PLATFORM STRIP */}
-              <div className="flex items-center gap-3 self-start md:self-center">
+              <div className="flex items-center gap-3 self-start sm:self-center">
                 
                 {/* WhatsApp */}
                 <div className="w-10 h-10 rounded-full border border-outline-variant/30 flex items-center justify-center text-on-surface-variant/40 hover:text-[#25D366] hover:border-[#25D366]/40 hover:bg-[#25D366]/5 transition-all duration-300 cursor-help group relative">
