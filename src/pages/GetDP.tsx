@@ -261,8 +261,8 @@ I wont be missing this so you should not
         {/* Page Header */}
         <div className="mb-16 text-center max-w-2xl mx-auto">
           <h1 className="text-4xl sm:text-6xl font-display font-medium tracking-tight text-primary uppercase leading-tight mb-6">
-            Campaign <br />
-            <span className="text-secondary italic">DP Generator.</span>
+            Share With <br />
+            <span className="text-secondary italic">Your Tribe.</span>
           </h1>
           <p className="text-on-surface-variant text-lg font-light leading-relaxed">
             Generate your personalized, high-resolution attendee flyer. Share your credentials and join the ecosystem on 20th June 2026.
