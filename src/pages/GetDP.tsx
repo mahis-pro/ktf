@@ -7,20 +7,19 @@ export function GetDP() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [name, setName] = useState('');
   const [headshotImg, setHeadshotImg] = useState<HTMLImageElement | null>(null);
-  const [logoImg, setLogoImg] = useState<HTMLImageElement | null>(null);
+  const [templateImg, setTemplateImg] = useState<HTMLImageElement | null>(null);
   const [dragActive, setDragActive] = useState(false);
-  
   // Photo manipulation controls
   const [scale, setScale] = useState(1);
   const [offsetX, setOffsetX] = useState(0);
   const [offsetY, setOffsetY] = useState(0);
 
-  // Preload logo on mount
+  // Preload template on mount
   useEffect(() => {
     const img = new Image();
-    img.src = '/ktf.png';
+    img.src = '/campaign dp flyer.jpg';
     img.crossOrigin = 'anonymous'; // Prevent tainted canvas issues if loaded externally
-    img.onload = () => setLogoImg(img);
+    img.onload = () => setTemplateImg(img);
   }, []);
 
   // Handle drawing to canvas in real-time
@@ -31,203 +30,109 @@ export function GetDP() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // 1. CLEAR & FILL PRESTIGE BACKGROUND (#002519 - KTF Forest Green)
-    ctx.fillStyle = '#002519';
-    ctx.fillRect(0, 0, 1080, 1080);
+    // Helper to draw rounded rectangles
+    const drawRoundRect = (
+      c: CanvasRenderingContext2D,
+      x: number,
+      y: number,
+      width: number,
+      height: number,
+      radius: number,
+      fill = false,
+      stroke = false
+    ) => {
+      c.beginPath();
+      c.moveTo(x + radius, y);
+      c.lineTo(x + width - radius, y);
+      c.quadraticCurveTo(x + width, y, x + width, y + radius);
+      c.lineTo(x + width, y + height - radius);
+      c.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      c.lineTo(x + radius, y + height);
+      c.quadraticCurveTo(x, y + height, x, y + height - radius);
+      c.lineTo(x, y + radius);
+      c.quadraticCurveTo(x, y, x + radius, y);
+      c.closePath();
+      if (fill) c.fill();
+      if (stroke) c.stroke();
+    };
 
-    // 2. DRAW TECHNICAL MESH GRID ACCENTS
-    ctx.strokeStyle = 'rgba(19, 108, 64, 0.12)'; // Subtle secondary green mesh
-    ctx.lineWidth = 1;
-    const gridSize = 60;
-    for (let x = 0; x < 1080; x += gridSize) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, 1080);
-      ctx.stroke();
-    }
-    for (let y = 0; y < 1080; y += gridSize) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(1080, y);
-      ctx.stroke();
-    }
-
-    // 3. DRAW BORDER FRAMING
-    // Outer secondary ring border
-    ctx.strokeStyle = 'rgba(19, 108, 64, 0.4)';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(30, 30, 1020, 1020);
-
-    // Inner thin border
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(45, 45, 990, 990);
-
-    // 4. DRAW CORNER TECH ACCENTS
-    ctx.fillStyle = 'rgba(19, 108, 64, 0.6)';
-    // Top-left
-    ctx.fillRect(25, 25, 10, 10);
-    // Top-right
-    ctx.fillRect(1045, 25, 10, 10);
-    // Bottom-left
-    ctx.fillRect(25, 1045, 10, 10);
-    // Bottom-right
-    ctx.fillRect(1045, 1045, 10, 10);
-
-    // 5. DRAW TECHNICAL READOUTS
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
-    ctx.font = 'bold 12px monospace';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'alphabetic';
-    ctx.fillText('SYS_LOC: 8.4821° N, 4.6748° E', 60, 75);
-    ctx.textAlign = 'right';
-    ctx.fillText('SYS_REF: KTF_MEMBER_2026', 1020 - 45, 75);
-
-    // 6. DRAW KTF BRAND LOGO
-    if (logoImg) {
-      const logoWidth = 150;
-      const logoHeight = 46;
-      ctx.drawImage(logoImg, 540 - logoWidth / 2, 105, logoWidth, logoHeight);
+    // 1. RENDER STATIC ORIGINAL FLYER TEMPLATE BACKGROUND
+    if (templateImg) {
+      ctx.drawImage(templateImg, 0, 0, 1080, 1080);
+    } else {
+      // Fallback elegant green gradient while loading
+      const bgGrad = ctx.createLinearGradient(0, 0, 1080, 1080);
+      bgGrad.addColorStop(0, '#009732');
+      bgGrad.addColorStop(1, '#003a10');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 1080, 1080);
     }
 
-    // 7. DRAW HEADER TEXT
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-    ctx.font = 'bold 13px monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText('KWASU TECH FESTIVAL // KTF 2026', 540, 185);
+    // 2. DRAW ROUNDED SQUARE IMAGE FRAME (LEFT SIDE: X=80, Y=276, W=408, H=408)
+    const frameX = 80;
+    const frameY = 276;
+    const frameW = 408;
+    const frameH = 408;
+    const frameRadius = 36;
 
-    // 8. CLIP & DRAW AVATAR (CENTER: X=540, Y=450, RADIUS=190)
-    const centerX = 540;
-    const centerY = 450;
-    const radius = 190;
-
-    // Draw circular frame rings
-    // Outer emerald ring
-    ctx.strokeStyle = '#136c40';
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius + 15, 0, Math.PI * 2);
-    ctx.stroke();
-
-    // Inner white boundary ring
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius + 5, 0, Math.PI * 2);
-    ctx.stroke();
-
-    // Mask image inside circular bounds
     ctx.save();
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.fillStyle = '#ffffff';
+    drawRoundRect(ctx, frameX, frameY, frameW, frameH, frameRadius, true, false);
     ctx.clip();
-
-    // Fill mask background (fallback in case photo is transparent)
-    ctx.fillStyle = '#f3f4f1';
-    ctx.fillRect(centerX - radius, centerY - radius, radius * 2, radius * 2);
 
     if (headshotImg) {
       const imgW = headshotImg.width;
       const imgH = headshotImg.height;
-      
-      // Scale cover
-      const minRatio = Math.max(radius * 2 / imgW, radius * 2 / imgH);
+      const minRatio = Math.max(frameW / imgW, frameH / imgH);
       const destW = imgW * minRatio * scale;
       const destH = imgH * minRatio * scale;
       
-      // Center position offsets
-      const destX = centerX - destW / 2 + offsetX;
-      const destY = centerY - destH / 2 + offsetY;
-      
+      const destX = frameX + frameW / 2 - destW / 2 + offsetX;
+      const destY = frameY + frameH / 2 - destH / 2 + offsetY;
       ctx.drawImage(headshotImg, destX, destY, destW, destH);
     } else {
-      // Tech style vector placeholder
-      ctx.fillStyle = '#191c1a';
-      ctx.fillRect(centerX - radius, centerY - radius, radius * 2, radius * 2);
-      
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+      // Vector placeholder
+      ctx.fillStyle = '#002519';
+      ctx.fillRect(frameX, frameY, frameW, frameH);
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
       ctx.beginPath();
-      ctx.arc(centerX, centerY + 30, 90, 0, Math.PI * 2);
+      ctx.arc(frameX + frameW/2, frameY + frameH/2 + 30, 90, 0, Math.PI * 2);
       ctx.fill();
       
       ctx.beginPath();
-      ctx.arc(centerX, centerY - 40, 50, 0, Math.PI * 2);
+      ctx.arc(frameX + frameW/2, frameY + frameH/2 - 40, 50, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = '#136c40';
+      ctx.fillStyle = '#2dfc53';
       ctx.font = 'bold 12px monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('AWAITING_UPLOAD', centerX, centerY + 130);
+      ctx.fillText('AWAITING_UPLOAD', frameX + frameW/2, frameY + frameH/2 + 130);
     }
+    ctx.restore();
 
-    ctx.restore(); // Restore context state
+    // 3. DRAW DYNAMIC NAME ON TOP OF THE TEMPLATE'S WHITE NAMEPLATE (X=80, Y=702, W=408, H=72)
+    const nameX = 80;
+    const nameY = 702;
+    const nameW = 408;
+    const nameH = 72;
 
-    // 9. DRAW BOTTOM ATTENDEE COPY
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-    ctx.font = 'bold 22px monospace';
+    ctx.fillStyle = '#003a10'; // Deep green text matching brand color exactly
+    ctx.font = '900 24px "Figtree", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('I WILL BE ATTENDING', 540, 715);
-
-    // 10. DRAW USER NAME IN BOLD FIGTREE SANS
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '900 68px "Figtree", sans-serif';
-    ctx.textBaseline = 'alphabetic';
     
-    const formattedName = name.trim().toUpperCase() || 'YOUR NAME HERE';
-    // Dynamically size name string to avoid container clipping
-    if (formattedName.length > 20) {
-      ctx.font = '900 52px "Figtree", sans-serif';
+    let displayName = name.trim().toUpperCase() || 'YOUR NAME';
+    if (displayName.length > 15) {
+      ctx.font = '900 20px "Figtree", sans-serif';
     }
-    if (formattedName.length > 25) {
-      ctx.font = '900 42px "Figtree", sans-serif';
+    if (displayName.length > 20) {
+      ctx.font = '900 16px "Figtree", sans-serif';
     }
-    ctx.fillText(formattedName, 540, 790);
+    ctx.fillText(displayName, nameX + nameW / 2, nameY + nameH / 2);
 
-    // 11. DRAW SOLID DATE CAPSULE BOX
-    const capW = 540;
-    const capH = 64;
-    const capX = 540 - capW / 2;
-    const capY = 840;
-    
-    ctx.fillStyle = '#136c40';
-    ctx.fillRect(capX, capY, capW, capH);
-    
-    // Thin interior gold accent outline
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(capX + 4, capY + 4, capW - 8, capH - 8);
-
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 20px monospace';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('JOIN ME ON 20TH JUNE 2026', 540, capY + 32);
-
-    // 12. DRAW TECHNICAL ACCENT READOUTS
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
-    ctx.font = '12px monospace';
-    ctx.textAlign = 'left';
-    ctx.fillText('KTF_CORE_REVISION: v2.6 // STATUS: ATTENDEE_VERIFIED', 60, 1010);
-
-    // Draw tech ecosystem barcode
-    const barcodeX = 860;
-    const barcodeY = 985;
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-    const barLines = [2, 4, 1, 6, 2, 8, 3, 2, 4, 1, 6, 3, 2, 8, 1, 4];
-    let currBarX = barcodeX;
-    
-    for (let i = 0; i < barLines.length; i++) {
-      ctx.lineWidth = barLines[i];
-      ctx.beginPath();
-      ctx.moveTo(currBarX, barcodeY);
-      ctx.lineTo(currBarX, barcodeY + 28);
-      ctx.stroke();
-      currBarX += barLines[i] + 2;
-    }
-
-  }, [name, headshotImg, logoImg, scale, offsetX, offsetY]);
+  }, [name, headshotImg, templateImg, scale, offsetX, offsetY]);
 
   // Handle Drag & Drop Files
   const handleDrag = (e: React.DragEvent) => {
